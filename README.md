@@ -1,100 +1,410 @@
 # Inventory Management and Reporting System
 
-A comprehensive full-stack inventory solution built with a secure Spring Boot REST API and a dynamic React frontend. This system delivers role-based access control, real-time stock monitoring, automated low-stock email alerts, and analytical insights.
-
-**Developed by Kethavath Naveen**
+A comprehensive full-stack inventory solution built with a secure Spring Boot REST API and a dynamic React frontend, delivering role-based access, real-time stock monitoring, and analytical insights.
 
 ---
 
-## 🚀 Features
+## Table of Contents
 
-### Backend (Spring Boot)
-- **JWT Authentication:** Stateless security using JJWT with secure token management.
-- **Role-Based Access Control:** Protects endpoints based on `ADMIN`, `STAFF`, and `CUSTOMER` roles.
-- **Automated Low-Stock Alerts:** Automatically scans inventory and dispatches SMTP email alerts to admins when items drop below reorder levels.
-- **Product Management:** Full CRUD functionality with both soft deletion (deactivation) and permanent removal.
-- **Stock Handling:** Secure and controlled inventory reduction/increase endpoints.
-
-### Frontend (React)
-- **Interactive Dashboard:** Displays key performance indicators, inventory value, and dynamic charts.
-- **Product Management Interface:** Searchable, filterable tables with inline editing.
-- **Theme Support:** Persistent dark/light mode using local storage.
-- **Role Enforcement:** The user interface adapts dynamically based on user permissions (e.g., hiding sensitive buttons from customers).
-- **Notification System:** Toast-based alerts for system feedback and real-time warnings.
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Architecture Overview](#architecture-overview)
+- [Database Schema](#database-schema)
+- [API Reference](#api-reference)
+- [Security & Roles](#security--roles)
+- [Getting Started](#getting-started)
+- [Configuration Reference](#configuration-reference)
+- [Running Tests](#running-tests)
+- [Known Issues & Notes](#known-issues--notes)
 
 ---
 
-## 💻 Tech Stack
+## Features
 
-**Backend:**
+### Backend
+- **JWT Authentication**
+  Stateless authentication using JJWT (HS256) with a 24-hour token lifespan.
+
+- **Role-Based Access Control**
+  Supports three roles: `ADMIN`, `SUPPLIER`, `CUSTOMER`.
+
+- **Product Management**
+  Full CRUD functionality with both soft deletion (deactivation) and permanent removal.
+
+- **Stock Handling**
+  Controlled stock updates with safeguards against invalid quantities.
+
+- **Search & Filtering**
+  Flexible product lookup by name, category, or supplier.
+
+- **Low-Stock Alerts**
+  Automated email notifications triggered during stock reduction or report execution.
+
+- **Initial Data Seeding**
+  Categories and suppliers populate automatically on first launch.
+
+- **Validation Layer**
+  Strict validation at the service level ensures data integrity.
+
+### Frontend
+- **Dual-panel Authentication UI**
+  Clean login and registration interface with theme switching support.
+
+- **Dashboard**
+  Displays KPIs, category-based charts, and low-stock alerts.
+
+- **Product Management Interface**
+  Searchable tables, inline editing, and role-based actions.
+
+- **Product Creation Module**
+  Validated form restricted to authorized roles.
+
+- **Reports Section**
+  Multiple analytical views computed directly from product data.
+
+- **User Management**
+  Admin-only functionality for account creation.
+
+- **Theme Support**
+  Persistent dark/light mode using local storage.
+
+- **Notification System**
+  Toast-based alerts for system feedback.
+
+- **Role Enforcement**
+  UI adapts dynamically based on user permissions.
+
+---
+
+## Tech Stack
+
+### Backend
 - Java 21
 - Spring Boot 3.2.5
 - Spring Security + JWT
-- Hibernate + Spring Data JPA
+- Hibernate + JPA
 - MySQL 8
-- Jakarta Mail (SMTP)
+- Jakarta Validation
+- Jakarta Mail
+- Lombok
+- JUnit, Mockito
 - Maven
 
-**Frontend:**
+> Note: For Java 23 compatibility, upgrade Spring Boot to version 3.3.5.
+
+### Frontend
+- JavaScript (ES2022)
 - React 18
 - React Router v6
 - Axios
-- Custom CSS (Variables & Theming)
+- Custom Canvas Charts
+- CSS (with variables and theming)
+- Create React App
 
 ---
 
-## 🛠️ Getting Started
+## Project Structure
+
+```
+.
+├── backend/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/com/
+│   │   │   │   ├── database/
+│   │   │   │   │   └── DatabaseConnection.java
+│   │   │   │   └── inventory/
+│   │   │   │       ├── ServerApplication.java
+│   │   │   │       ├── config/
+│   │   │   │       │   └── StarterDataConfig.java
+│   │   │   │       ├── controller/
+│   │   │   │       │   ├── Controller.java
+│   │   │   │       │   └── AuthController.java
+│   │   │   │       ├── authservice/
+│   │   │   │       │   ├── AuthService.java
+│   │   │   │       │   └── CustomUserDetailsService.java
+│   │   │   │       ├── security/
+│   │   │   │       │   ├── WebSecurityConfig.java
+│   │   │   │       │   ├── SecurityBeansConfig.java
+│   │   │   │       │   ├── JwtAuthenticationFilter.java
+│   │   │   │       │   └── CorsConfig.java
+│   │   │   │       ├── utils/
+│   │   │   │       │   └── AuthUtil.java
+│   │   │   │       ├── entity/
+│   │   │   │       │   ├── User.java
+│   │   │   │       │   └── Role.java
+│   │   │   │       ├── repository/
+│   │   │   │       │   └── UserRepository.java
+│   │   │   │       ├── dto/
+│   │   │   │       │   ├── AuthRequest.java
+│   │   │   │       │   ├── AuthResponse.java
+│   │   │   │       │   └── RegisterRequest.java
+│   │   │   │       ├── database_system/
+│   │   │   │       │   ├── entity/
+│   │   │   │       │   │   ├── Product.java
+│   │   │   │       │   │   ├── Category.java
+│   │   │   │       │   │   ├── Supplier.java
+│   │   │   │       │   │   └── Transaction.java
+│   │   │   │       │   └── repository/
+│   │   │   │       │       ├── ProductRepository.java
+│   │   │   │       │       ├── CategoryRepository.java
+│   │   │   │       │       └── SupplierRepository.java
+│   │   │   │       ├── dao/
+│   │   │   │       │   └── ProductDAO.java
+│   │   │   │       ├── service/
+│   │   │   │       │   ├── ProductService.java
+│   │   │   │       │   ├── InventoryService.java
+│   │   │   │       │   └── validation/
+│   │   │   │       │       ├── ProductValidator.java
+│   │   │   │       │       └── InventoryValidator.java
+│   │   │   │       └── Report/
+│   │   │   │           ├── InventoryReportService.java
+│   │   │   │           └── EmailService.java
+│   │   │   └── resources/
+│   │   │       ├── application.properties
+│   │   │       └── stockmanagement.sql
+│   │   └── test/java/com/inventory/
+│   │       ├── ControllerTest.java
+│   │       ├── InventoryServiceTest.java
+│   │       ├── InventoryValidatorTest.java
+│   │       ├── ProductDAOTest.java
+│   │       ├── ProductEntityTest.java
+│   │       ├── ProductServiceTest.java
+│   │       ├── ProductValidatorTest.java
+│   │       ├── ServerApplicationTests.java
+│   │       └── security/
+│   │           ├── AuthControllerTest.java
+│   │           ├── AuthServiceTest.java
+│   │           ├── AuthUtilTest.java
+│   │           ├── CustomUserDetailsServiceTest.java
+│   │           └── JwtAuthenticationFilterTest.java
+│   └── pom.xml
+│
+└── frontend/
+    ├── public/
+    │   └── index.html
+    ├── src/
+    │   ├── App.js
+    │   ├── pages/
+    │   │   ├── LoginPage.jsx
+    │   │   ├── RegisterPage.jsx
+    │   │   ├── DashboardPage.jsx
+    │   │   ├── ProductsPage.jsx
+    │   │   ├── AddProductPage.jsx
+    │   │   ├── ReportsPage.jsx
+    │   │   └── AddUserPage.jsx
+    │   ├── components/
+    │   │   ├── Navbar.jsx
+    │   │   ├── Sidebar.jsx
+    │   │   ├── ProductForm.jsx
+    │   │   ├── ProductTable.jsx
+    │   │   ├── ChartComponent.jsx
+    │   │   ├── SummaryCard.jsx
+    │   │   └── LowStockBadge.jsx
+    │   ├── context/
+    │   │   ├── AuthContext.js
+    │   │   ├── InventoryContext.jsx
+    │   │   ├── ThemeContext.js
+    │   │   └── ToastContext.jsx
+    │   ├── hooks/
+    │   │   ├── useAuth.js
+    │   │   ├── useProducts.js
+    │   │   └── useReports.js
+    │   ├── services/
+    │   │   ├── AuthService.js
+    │   │   ├── ProductService.js
+    │   │   └── UserService.js
+    │   ├── utilities/
+    │   │   ├── ApiUtils.js
+    │   │   ├── Constants.js
+    │   │   ├── StorageUtils.js
+    │   │   ├── ValidationUtils.js
+    │   │   └── FormatUtils.js
+    │   └── styles/
+    │       ├── global.css
+    │       ├── dashboard.css
+    │       ├── inventory.css
+    │       └── login.css
+    └── package.json
+```
+
+---
+
+## Architecture Overview
+
+```
+React Frontend (Browser)
+        |
+        |  HTTP Requests (JWT Auth)
+        v
+Spring Boot Backend
+        |
+        |  JPA / Hibernate
+        v
+   MySQL Database
+```
+
+Core backend responsibilities include:
+- Token validation
+- Request authorization
+- Business logic execution
+- Data persistence
+
+---
+
+## Database Schema
+
+### users
+Stores authentication and role data.
+
+### products
+Core inventory entity with stock tracking and metadata.
+
+### categories
+Product classification (auto-seeded on first launch).
+
+### Staff
+Staff contact information.
+
+### transactions
+Logs stock movement history.
+
+> Tables are generated automatically via Hibernate.
+
+---
+
+## API Reference
+
+### Authentication
+- `POST /auth/register`
+- `POST /auth/login`
+
+### Products
+- Retrieve, search, filter, add, update, delete, deactivate.
+
+### Stock
+- Increase or reduce product quantities.
+
+### Reports
+- Generate low-stock alerts via email.
+
+---
+
+## Security & Roles
+
+### JWT Workflow
+1. User logs in and receives a token
+2. Token is stored on the client
+3. Token is sent with each request
+4. Backend validates and authorizes the request
+
+### Role Capabilities
+
+| Action | CUSTOMER | SUPPLIER | ADMIN |
+|---|---|---|---|
+| View Data | ✓ | ✓ | ✓ |
+| Modify Products | ✗ | ✓ | ✓ |
+| Delete Products | ✗ | ✗ | ✓ |
+| Manage Users | ✗ | ✗ | ✓ |
+
+---
+
+## Getting Started
+
+### Open In VS Code
+- Open the project folder:
+  `C:\Users\Kethavath Naveen\OneDrive\Desktop\Inventory-Monitoring-and-Reporting-System-main`
+- Install the recommended extensions when VS Code prompts you.
+- Open `Run and Debug` or `Terminal > Run Task`.
+- Use:
+  - `Frontend: Install Dependencies` once
+  - `Backend: Run` to start Spring Boot
+  - `Frontend: Start` to start React
+  - `Run Full Stack` to debug the backend and start the frontend
+
+> The backend still requires MySQL running locally with a `stockmanagement` database and the credentials configured in `backend/src/main/resources/application.properties`.
 
 ### Prerequisites
-- **Java 21**
-- **Node.js**
-- **MySQL Server**
-- **Maven**
+- Java 21
+- Maven
+- Node.js
+- MySQL
+- Gmail account (for SMTP alerts)
 
-### 1. Database Setup
-Create the MySQL database:
+### Database Setup
+
 ```sql
 CREATE DATABASE stockmanagement;
 ```
 
-### 2. Backend Setup
-Navigate to the backend directory, ensure your MySQL credentials match in `application.properties`, and run the Spring Boot application:
+### Email Configuration
+- Enable Gmail 2FA
+- Generate an App Password
+- Insert credentials into `EmailService`
+
+### Backend Setup
+
 ```bash
 cd backend
-./mvnw spring-boot:run "-Dmaven.test.skip=true"
+./mvnw spring-boot:run
 ```
-The API will start on `http://localhost:8080`.
 
-### 3. Frontend Setup
-Navigate to the frontend directory, install the dependencies, and start the React development server:
+Runs on: `http://localhost:8080`
+
+### Frontend Setup
+
 ```bash
 cd frontend
 npm install
 npm start
 ```
-The React app will open automatically on `http://localhost:3000`.
+
+Runs on: `http://localhost:3000`
 
 ---
 
-## 🛡️ Security & Roles
+## Configuration Reference
 
-| Action | CUSTOMER | STAFF | ADMIN |
-|---|:---:|:---:|:---:|
-| View Dashboard & Reports | ✓ | ✓ | ✓ |
-| Add / Edit Products | ✗ | ✓ | ✓ |
-| Trigger Email Alerts | ✗ | ✓ | ✓ |
-| Delete Products | ✗ | ✗ | ✓ |
+Key properties include:
+- Database connection settings
+- Hibernate behavior
+- JWT secret and expiration
 
----
-
-## 📧 Email Configuration
-To enable the automated low-stock email alerts:
-1. Open `backend/src/main/java/com/inventory/Report/EmailService.java`.
-2. Update the `username` with your sender Gmail address.
-3. Update the `password` with a **16-character Gmail App Password** (Generated via Google Account -> Security -> 2-Step Verification).
-4. Update the receiver email address in `InventoryReportService.java`.
+> Always replace the default JWT secret before deploying to production.
 
 ---
 
-## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Running Tests
+
+```bash
+./mvnw test
+```
+
+Includes:
+- Controller tests
+- Service tests
+- Security tests
+- Validation tests
+
+---
+
+## Known Issues & Notes
+
+- **Java 23 Compatibility**
+  Requires a Spring Boot upgrade due to Mockito limitations.
+
+- **Backend Authorization**
+  Role enforcement is primarily handled on the frontend side.
+
+- **CORS Restriction**
+  Default configuration allows only `localhost:3000`.
+
+- **Email Setup Required**
+  No default recipient address is configured out of the box.
+
+- **Legacy Code Present**
+  Some unused classes and SQL files are retained for reference purposes.
+
+- **Static Dropdown Values**
+  Category and supplier IDs are currently hardcoded in the frontend.
