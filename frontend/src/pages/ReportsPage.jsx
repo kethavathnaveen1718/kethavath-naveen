@@ -34,7 +34,10 @@ export default function ReportsPage() {
 
   // Category breakdown
   const categoryMap = {};
-  products.forEach(p => { categoryMap[p.category] = (categoryMap[p.category] || 0) + 1; });
+  products.forEach(p => {
+    const catName = p.category?.name || 'Unknown';
+    categoryMap[catName] = (categoryMap[catName] || 0) + 1;
+  });
   const categoryChart = Object.entries(categoryMap).map(([label, value]) => ({ label, value }));
 
   // Value chart — top 8 by total value
@@ -132,13 +135,13 @@ export default function ReportsPage() {
                     {lowStockProducts.map(p => (
                       <tr key={p.id}>
                         <td style={{ fontWeight: 500 }}>{p.name}</td>
-                        <td><span className="category-pill">{p.category}</span></td>
+                        <td><span className="category-pill">{p.category?.name || '—'}</span></td>
                         <td style={{ fontFamily: 'DM Mono,monospace', color: 'var(--accent-red)' }}>{p.quantity}</td>
                         <td style={{ fontFamily: 'DM Mono,monospace' }}>{p.reorderLevel}</td>
                         <td style={{ fontFamily: 'DM Mono,monospace', color: 'var(--accent-amber)' }}>
                           -{p.reorderLevel - p.quantity}
                         </td>
-                        <td style={{ color: 'var(--text-secondary)' }}>{p.supplier || '—'}</td>
+                        <td style={{ color: 'var(--text-secondary)' }}>{p.supplier?.name || '—'}</td>
                         <td><LowStockBadge quantity={p.quantity} reorderLevel={p.reorderLevel} /></td>
                       </tr>
                     ))}
@@ -166,7 +169,7 @@ export default function ReportsPage() {
                       .map(p => (
                         <tr key={p.id}>
                           <td style={{ fontWeight: 500 }}>{p.name}</td>
-                          <td><span className="category-pill">{p.category}</span></td>
+                          <td><span className="category-pill">{p.category?.name || '—'}</span></td>
                           <td style={{ fontFamily: 'DM Mono,monospace' }}>{p.quantity}</td>
                           <td style={{ fontFamily: 'DM Mono,monospace' }}>{FormatUtils.currency(p.unitPrice)}</td>
                           <td style={{ fontFamily: 'DM Mono,monospace', color: 'var(--accent-primary)', fontWeight: 600 }}>
@@ -191,7 +194,7 @@ export default function ReportsPage() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px,1fr))', gap: 16 }}>
                 {Object.entries(categoryMap).map(([cat, count]) => {
                   const catValue = products
-                    .filter(p => p.category === cat)
+                    .filter(p => (p.category?.name || 'Unknown') === cat)
                     .reduce((acc, p) => acc + p.quantity * p.unitPrice, 0);
                   return (
                     <div key={cat} className="summary-card">
