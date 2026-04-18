@@ -10,7 +10,7 @@ export default function LowStockBadge({ quantity, reorderLevel }) {
   }
   return (
     <span className="ok-badge">
-      ✓ OK
+      ✓ In Stock
     </span>
   );
 }

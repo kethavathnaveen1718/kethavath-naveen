@@ -27,8 +27,8 @@ function toApiPayload(data = {}, id) {
     price: Number(data.unitPrice),
     quantity: Number(data.quantity),
     reorderLevel: Number(data.reorderLevel),
-    category: { id: Number(data.categoryId) },
-    supplier: { id: Number(data.supplierId) },
+    category: data.category,
+    supplier: data.supplier,
   };
 }
 

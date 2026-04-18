@@ -1,8 +1,6 @@
 package com.inventory;
 import com.inventory.dao.ProductDAO;
-import com.inventory.database_system.entity.Category;
 import com.inventory.database_system.entity.Product;
-import com.inventory.database_system.entity.Supplier;
 import com.inventory.service.ProductService;
 import com.inventory.service.validation.ProductValidator;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,14 +32,6 @@ class ProductServiceTest {
 
     @BeforeEach
     void setUp() {
-        Category cat = new Category();
-        cat.setId(1L);
-        cat.setName("Electronics");
-
-        Supplier sup = new Supplier();
-        sup.setId(1L);
-        sup.setName("TechSupplier");
-
         sampleProduct = new Product();
         sampleProduct.setId(1L);
         sampleProduct.setName("Wireless Mouse");
@@ -50,8 +40,8 @@ class ProductServiceTest {
         sampleProduct.setQuantity(100);
         sampleProduct.setReorderLevel(10);
         sampleProduct.setActive(true);
-        sampleProduct.setCategory(cat);
-        sampleProduct.setSupplier(sup);
+        sampleProduct.setCategory("Electronics");
+        sampleProduct.setSupplier("TechSupplier");
     }
 
     // ── addProduct ────────────────────────────────────────────────────────────
@@ -155,24 +145,24 @@ class ProductServiceTest {
 
     @Test
     void getProductsByCategory_returnsMatchingProducts() {
-        when(productDAO.getProductsByCategory(1L)).thenReturn(List.of(sampleProduct));
+        when(productDAO.getProductsByCategory("Electronics")).thenReturn(List.of(sampleProduct));
 
-        List<Product> result = productService.getProductsByCategory(1L);
+        List<Product> result = productService.getProductsByCategory("Electronics");
 
         assertEquals(1, result.size());
-        assertEquals(1L, result.get(0).getCategory().getId());
+        assertEquals("Electronics", result.get(0).getCategory());
     }
 
     // ── getProductsBySupplier ─────────────────────────────────────────────────
 
     @Test
     void getProductsBySupplier_returnsMatchingProducts() {
-        when(productDAO.getProductsBySupplier(1L)).thenReturn(List.of(sampleProduct));
+        when(productDAO.getProductsBySupplier("TechSupplier")).thenReturn(List.of(sampleProduct));
 
-        List<Product> result = productService.getProductsBySupplier(1L);
+        List<Product> result = productService.getProductsBySupplier("TechSupplier");
 
         assertEquals(1, result.size());
-        assertEquals(1L, result.get(0).getSupplier().getId());
+        assertEquals("TechSupplier", result.get(0).getSupplier());
     }
 
     // ── deleteProduct ─────────────────────────────────────────────────────────

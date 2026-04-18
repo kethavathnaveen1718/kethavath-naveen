@@ -26,11 +26,11 @@ public class ProductValidator {
             throw new RuntimeException("Invalid quantity");
         }
 
-        if (product.getCategory() == null || product.getCategory().getId() == null) {
+        if (product.getCategory() == null || product.getCategory().isBlank()) {
             throw new RuntimeException("Category is required");
         }
 
-        if (product.getSupplier() == null || product.getSupplier().getId() == null) {
+        if (product.getSupplier() == null || product.getSupplier().isBlank()) {
             throw new RuntimeException("Supplier is required");
         }
     }

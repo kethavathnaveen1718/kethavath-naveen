@@ -49,12 +49,12 @@ public class ProductDAO {
         return productRepository.findByActiveTrue();
     }
 
-    public List<Product> getProductsByCategory(Long categoryId) {
-        return productRepository.findByCategoryId(categoryId);
+    public List<Product> getProductsByCategory(String category) {
+        return productRepository.findByCategory(category);
     }
 
-    public List<Product> getProductsBySupplier(Long supplierId) {
-        return productRepository.findBySupplierId(supplierId);
+    public List<Product> getProductsBySupplier(String supplier) {
+        return productRepository.findBySupplier(supplier);
     }
 
     public List<Product> searchByName(String name) {

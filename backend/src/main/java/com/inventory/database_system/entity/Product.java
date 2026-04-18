@@ -57,13 +57,11 @@ public class Product {
 
     private LocalDateTime updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    @Column(length = 100)
+    private String category;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_id", nullable = false)
-    private Supplier supplier;
+    @Column(length = 100)
+    private String supplier;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Transaction> transactions = new ArrayList<>();
@@ -75,7 +73,7 @@ public class Product {
     public Product(Long id, String name, String description, String sku,
                    BigDecimal price, int quantity, Integer reorderLevel,
                    Boolean active, LocalDateTime createdAt, LocalDateTime updatedAt,
-                   Category category, Supplier supplier, List<Transaction> transactions) {
+                   String category, String supplier, List<Transaction> transactions) {
         this.id           = id;
         this.name         = name;
         this.description  = description;
@@ -103,8 +101,8 @@ public class Product {
     public Boolean getActive()                 { return active; }
     public LocalDateTime getCreatedAt()        { return createdAt; }
     public LocalDateTime getUpdatedAt()        { return updatedAt; }
-    public Category getCategory()              { return category; }
-    public Supplier getSupplier()              { return supplier; }
+    public String getCategory()              { return category; }
+    public String getSupplier()              { return supplier; }
     public List<Transaction> getTransactions() { return transactions; }
 
     // ── Setters ───────────────────────────────────────────────────────────────
@@ -119,8 +117,8 @@ public class Product {
     public void setActive(Boolean active)                    { this.active = active; }
     public void setCreatedAt(LocalDateTime createdAt)        { this.createdAt = createdAt; }
     public void setUpdatedAt(LocalDateTime updatedAt)        { this.updatedAt = updatedAt; }
-    public void setCategory(Category category)               { this.category = category; }
-    public void setSupplier(Supplier supplier)               { this.supplier = supplier; }
+    public void setCategory(String category)               { this.category = category; }
+    public void setSupplier(String supplier)               { this.supplier = supplier; }
     public void setTransactions(List<Transaction> transactions) { this.transactions = transactions; }
 
     // ── JPA lifecycle ─────────────────────────────────────────────────────────

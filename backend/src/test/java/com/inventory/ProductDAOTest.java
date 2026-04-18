@@ -1,9 +1,7 @@
 package com.inventory;
 
 import com.inventory.dao.ProductDAO;
-import com.inventory.database_system.entity.Category;
 import com.inventory.database_system.entity.Product;
-import com.inventory.database_system.entity.Supplier;
 import com.inventory.database_system.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,12 +30,6 @@ class ProductDAOTest {
 
     @BeforeEach
     void setUp() {
-        Category cat = new Category();
-        cat.setId(1L);
-
-        Supplier sup = new Supplier();
-        sup.setId(1L);
-
         sampleProduct = new Product();
         sampleProduct.setId(1L);
         sampleProduct.setName("Monitor");
@@ -46,8 +38,8 @@ class ProductDAOTest {
         sampleProduct.setQuantity(30);
         sampleProduct.setReorderLevel(5);
         sampleProduct.setActive(true);
-        sampleProduct.setCategory(cat);
-        sampleProduct.setSupplier(sup);
+        sampleProduct.setCategory("Electronics");
+        sampleProduct.setSupplier("TechSupplier");
     }
 
     // ── addProduct ────────────────────────────────────────────────────────────
@@ -142,21 +134,21 @@ class ProductDAOTest {
 
     @Test
     void getProductsByCategory_returnsMatchingProducts() {
-        when(productRepository.findByCategoryId(1L)).thenReturn(List.of(sampleProduct));
+        when(productRepository.findByCategory("Electronics")).thenReturn(List.of(sampleProduct));
 
-        List<Product> result = productDAO.getProductsByCategory(1L);
+        List<Product> result = productDAO.getProductsByCategory("Electronics");
 
         assertEquals(1, result.size());
-        assertEquals(1L, result.get(0).getCategory().getId());
+        assertEquals("Electronics", result.get(0).getCategory());
     }
 
     // ── getProductsBySupplier ─────────────────────────────────────────────────
 
     @Test
     void getProductsBySupplier_returnsMatchingProducts() {
-        when(productRepository.findBySupplierId(1L)).thenReturn(List.of(sampleProduct));
+        when(productRepository.findBySupplier("TechSupplier")).thenReturn(List.of(sampleProduct));
 
-        List<Product> result = productDAO.getProductsBySupplier(1L);
+        List<Product> result = productDAO.getProductsBySupplier("TechSupplier");
 
         assertEquals(1, result.size());
     }

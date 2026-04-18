@@ -3,9 +3,7 @@ package com.inventory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inventory.Report.InventoryReportService;
 import com.inventory.controller.Controller;
-import com.inventory.database_system.entity.Category;
 import com.inventory.database_system.entity.Product;
-import com.inventory.database_system.entity.Supplier;
 import com.inventory.security.JwtAuthenticationFilter;
 import com.inventory.authservice.CustomUserDetailsService;
 import com.inventory.utils.AuthUtil;
@@ -56,14 +54,6 @@ class ControllerTest {
 
     @BeforeEach
     void setUp() {
-        Category cat = new Category();
-        cat.setId(1L);
-        cat.setName("Electronics");
-
-        Supplier sup = new Supplier();
-        sup.setId(1L);
-        sup.setName("TechSupplier");
-
         sampleProduct = new Product();
         sampleProduct.setId(1L);
         sampleProduct.setName("Wireless Mouse");
@@ -72,8 +62,8 @@ class ControllerTest {
         sampleProduct.setQuantity(100);
         sampleProduct.setReorderLevel(10);
         sampleProduct.setActive(true);
-        sampleProduct.setCategory(cat);
-        sampleProduct.setSupplier(sup);
+        sampleProduct.setCategory("Electronics");
+        sampleProduct.setSupplier("TechSupplier");
     }
 
     // ── Security — unauthenticated access ─────────────────────────────────────
@@ -220,11 +210,11 @@ class ControllerTest {
     @Test
     @WithMockUser(roles = {"ADMIN"})
     void getProductsByCategory_returns200() throws Exception {
-        when(productService.getProductsByCategory(1L)).thenReturn(List.of(sampleProduct));
+        when(productService.getProductsByCategory("Electronics")).thenReturn(List.of(sampleProduct));
 
-        mockMvc.perform(get("/api/products/category/1"))
+        mockMvc.perform(get("/api/products/category/Electronics"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].category.id").value(1));
+                .andExpect(jsonPath("$[0].category").value("Electronics"));
     }
 
     // ── GET /api/products/supplier/{id} ──────────────────────────────────────
@@ -232,11 +222,11 @@ class ControllerTest {
     @Test
     @WithMockUser(roles = {"SUPPLIER"})
     void getProductsBySupplier_returns200() throws Exception {
-        when(productService.getProductsBySupplier(1L)).thenReturn(List.of(sampleProduct));
+        when(productService.getProductsBySupplier("TechSupplier")).thenReturn(List.of(sampleProduct));
 
-        mockMvc.perform(get("/api/products/supplier/1"))
+        mockMvc.perform(get("/api/products/supplier/TechSupplier"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].supplier.id").value(1));
+                .andExpect(jsonPath("$[0].supplier").value("TechSupplier"));
     }
 
     // ── DELETE /api/product/{id} ──────────────────────────────────────────────

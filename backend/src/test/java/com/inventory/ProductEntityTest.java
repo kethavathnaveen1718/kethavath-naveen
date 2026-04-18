@@ -1,9 +1,7 @@
 package com.inventory;
 
 
-import com.inventory.database_system.entity.Category;
 import com.inventory.database_system.entity.Product;
-import com.inventory.database_system.entity.Supplier;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -13,12 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductEntityTest {
 
     private Product buildProduct(int quantity, int reorderLevel) {
-        Category cat = new Category();
-        cat.setId(1L);
-
-        Supplier sup = new Supplier();
-        sup.setId(1L);
-
         Product p = new Product();
         p.setName("Test Product");
         p.setSku("TEST-001");
@@ -26,8 +18,8 @@ class ProductEntityTest {
         p.setQuantity(quantity);
         p.setReorderLevel(reorderLevel);
         p.setActive(true);
-        p.setCategory(cat);
-        p.setSupplier(sup);
+        p.setCategory("Electronics");
+        p.setSupplier("TechSupplier");
         return p;
     }
 

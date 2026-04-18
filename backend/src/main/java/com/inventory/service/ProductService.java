@@ -40,12 +40,12 @@ public class ProductService {
         return productDAO.searchByName(name);
     }
 
-    public List<Product> getProductsByCategory(Long categoryId) {
-        return productDAO.getProductsByCategory(categoryId);
+    public List<Product> getProductsByCategory(String category) {
+        return productDAO.getProductsByCategory(category);
     }
 
-    public List<Product> getProductsBySupplier(Long supplierId) {
-        return productDAO.getProductsBySupplier(supplierId);
+    public List<Product> getProductsBySupplier(String supplier) {
+        return productDAO.getProductsBySupplier(supplier);
     }
 
     // id type changed: int → Long

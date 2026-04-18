@@ -1,7 +1,5 @@
 package com.inventory;
-import com.inventory.database_system.entity.Category;
 import com.inventory.database_system.entity.Product;
-import com.inventory.database_system.entity.Supplier;
 import com.inventory.service.validation.ProductValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,19 +14,13 @@ class ProductValidatorTest {
 
     // Builds a fully valid product — individual tests break one field at a time
     private Product validProduct() {
-        Category cat = new Category();
-        cat.setId(1L);
-
-        Supplier sup = new Supplier();
-        sup.setId(1L);
-
         Product p = new Product();
         p.setName("Keyboard");
         p.setSku("KB-001");
         p.setPrice(new BigDecimal("49.99"));
         p.setQuantity(50);
-        p.setCategory(cat);
-        p.setSupplier(sup);
+        p.setCategory("Electronics");
+        p.setSupplier("TechSupplier");
         return p;
     }
 
@@ -131,9 +123,9 @@ class ProductValidatorTest {
     }
 
     @Test
-    void validate_categoryWithNullId_throws() {
+    void validate_blankCategory_throws() {
         Product p = validProduct();
-        p.setCategory(new Category()); // id is null
+        p.setCategory("   ");
         assertThrows(RuntimeException.class, () -> validator.validate(p));
     }
 
@@ -148,9 +140,9 @@ class ProductValidatorTest {
     }
 
     @Test
-    void validate_supplierWithNullId_throws() {
+    void validate_blankSupplier_throws() {
         Product p = validProduct();
-        p.setSupplier(new Supplier()); // id is null
+        p.setSupplier("   ");
         assertThrows(RuntimeException.class, () -> validator.validate(p));
     }
 }

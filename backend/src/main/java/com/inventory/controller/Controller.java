@@ -88,17 +88,17 @@ public class Controller {
     /**
      * GET /api/products/category/{categoryId}
      */
-    @GetMapping("/products/category/{categoryId}")
-    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable Long categoryId) {
-        return ResponseEntity.ok(productService.getProductsByCategory(categoryId));
+    @GetMapping("/products/category/{category}")
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category) {
+        return ResponseEntity.ok(productService.getProductsByCategory(category));
     }
 
     /**
      * GET /api/products/supplier/{supplierId}
      */
-    @GetMapping("/products/supplier/{supplierId}")
-    public ResponseEntity<List<Product>> getProductsBySupplier(@PathVariable Long supplierId) {
-        return ResponseEntity.ok(productService.getProductsBySupplier(supplierId));
+    @GetMapping("/products/supplier/{supplier}")
+    public ResponseEntity<List<Product>> getProductsBySupplier(@PathVariable String supplier) {
+        return ResponseEntity.ok(productService.getProductsBySupplier(supplier));
     }
 
     /**

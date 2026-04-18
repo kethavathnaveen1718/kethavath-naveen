@@ -10,13 +10,11 @@ export const ValidationUtils = {
   email: (val) =>
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) ? 'Invalid email address.' : '',
  
-  validateProduct: ({ name, categoryId, supplierId, quantity, unitPrice, reorderLevel }) => {
+  validateProduct: ({ name, category, supplier, quantity, unitPrice, reorderLevel }) => {
     const errors = {};
     if (!name?.trim())          errors.name         = 'Product name is required.';
-    if (categoryId === '' || categoryId === null || categoryId === undefined || isNaN(categoryId) || Number(categoryId) <= 0)
-                                errors.categoryId   = 'Category ID must be a positive number.';
-    if (supplierId === '' || supplierId === null || supplierId === undefined || isNaN(supplierId) || Number(supplierId) <= 0)
-                                errors.supplierId   = 'Supplier ID must be a positive number.';
+    if (!category?.trim())      errors.category     = 'Category is required.';
+    if (!supplier?.trim())      errors.supplier     = 'Supplier is required.';
     if (quantity === '' || isNaN(quantity) || Number(quantity) < 0)
                                 errors.quantity     = 'Quantity must be 0 or more.';
     if (!unitPrice || isNaN(unitPrice) || Number(unitPrice) <= 0)
