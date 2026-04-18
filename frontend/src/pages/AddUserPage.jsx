@@ -104,17 +104,7 @@ export default function AddUserPage() {
               </div>
             </div>
 
-            {/* Role info hint */}
-            <div style={{
-              background: 'var(--bg-secondary)', border: '1px solid var(--border)',
-              borderRadius: 'var(--radius-sm)', padding: '12px 16px', marginTop: 4,
-              fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.6,
-            }}>
-              <strong style={{ color: 'var(--text-primary)' }}>Role permissions:</strong><br />
-              <span style={{ color: 'var(--accent-purple)' }}>ADMIN</span> — Full access including user management &nbsp;|&nbsp;
-              <span style={{ color: 'var(--accent-primary)' }}>SUPPLIER</span> — Add / manage products &nbsp;|&nbsp;
-              <span style={{ color: 'var(--accent-green)' }}>CUSTOMER</span> — View-only access
-            </div>
+
 
             <div className="form-actions">
               <button type="submit" className="btn btn-primary" disabled={loading}>
