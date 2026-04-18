@@ -34,7 +34,7 @@ function AppRoutes() {
       } />
       <Route path="/dashboard"   element={<Protected><DashboardPage /></Protected>} />
       <Route path="/products"    element={<Protected><ProductsPage /></Protected>} />
-      <Route path="/add-product" element={<Protected requiredRole="SUPPLIER"><AddProductPage /></Protected>} />
+      <Route path="/add-product" element={<Protected requiredRole="CUSTOMER"><AddProductPage /></Protected>} />
       <Route path="/reports"     element={<Protected><ReportsPage /></Protected>} />
       <Route path="/add-user"    element={<Protected requiredRole="ADMIN"><AddUserPage /></Protected>} />
       <Route path="*"            element={<Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />} />
