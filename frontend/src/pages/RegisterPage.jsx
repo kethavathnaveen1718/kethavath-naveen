@@ -72,7 +72,7 @@ export default function RegisterPage() {
             <div className="login-stat-label">User mgmt</div>
           </div>
           <div>
-            <div className="login-stat-value">Staff</div>
+            <div className="login-stat-value">Supplier</div>
             <div className="login-stat-label">Add products</div>
           </div>
           <div>
@@ -131,14 +131,9 @@ export default function RegisterPage() {
           <div className="form-group">
             <label>Role</label>
             <select value={form.role} onChange={set('role')}>
-              {/* {Object.values(ROLES).map((r) => (
-                <option key={r} value={r}>
-                  {r}
-                </option>
-              ))} */}
               {Object.values(ROLES).map((r) => (
                 <option key={r} value={r}>
-                  {r === "SUPPLIER" ? "STAFF" : r}
+                  {r}
                 </option>
               ))}
             </select>

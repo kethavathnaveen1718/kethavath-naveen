@@ -101,7 +101,7 @@ export default function Sidebar({ lowStockCount = 0 }) {
           <div style={{ fontSize: '0.82rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {user?.username}
           </div>
-          <div style={{ fontSize: '0.7rem', color: 'var(--text2)' }}>{user?.role === "CUSTOMER" ? "STAFF" : user?.role}</div>
+          <div style={{ fontSize: '0.7rem', color: 'var(--text2)' }}>{user?.role}</div>
         </div>
         <button
           onClick={logout}
