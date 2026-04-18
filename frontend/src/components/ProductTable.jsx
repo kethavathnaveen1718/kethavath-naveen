@@ -55,9 +55,9 @@ export default function ProductTable({
                 <span>{p.sku || '—'}</span>
               </td>
               <td>
-                <span className="category-pill">{p.category || '—'}</span>
+                <span className="category-pill">{p.category?.name || '—'}</span>
               </td>
-              <td>{p.supplier || '—'}</td>
+              <td>{p.supplier?.name || '—'}</td>
               <td style={{ fontFamily: 'DM Mono, monospace' }}>{p.quantity}</td>
               <td style={{ fontFamily: 'DM Mono, monospace' }}>
                 {FormatUtils.currency(p.unitPrice)}

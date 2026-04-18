@@ -19,7 +19,7 @@ import java.util.List;
         @Index(name = "idx_product_supplier", columnList = "supplier_id")
 })
 //@JsonIgnoreProperties({"category", "supplier", "transactions"})
-@JsonIgnoreProperties(value = {"category", "supplier", "transactions"}, allowSetters = true)
+@JsonIgnoreProperties(value = {"transactions"}, allowSetters = true)
 
 public class Product {
 
